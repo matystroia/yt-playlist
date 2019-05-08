@@ -13,9 +13,10 @@ function updateQueue() {
 }
 
 function getQueue() {
-    let gettingQueue = browser.runtime.sendMessage({message: 'getQueue'});
-    let gettingVideo = browser.runtime.sendMessage({message: 'getVideo'});
-    Promise.all([gettingQueue, gettingVideo]).then(responses => {
+    Promise.all([
+        browser.runtime.sendMessage({message: 'getQueue'}),
+        browser.runtime.sendMessage({message: 'getVideo'})
+    ]).then(responses => {
         queue = responses[0].queue;
         currentVideo = responses[1].video;
         refreshPopup();
@@ -33,16 +34,21 @@ function refreshPopup() {
 
     let i = 0;
     for (const video of queue) {
-        let item = document.createElement('div');
-        item.innerText = video.title;
+        let queueItem = document.createElement('div');
+        queueItem.classList.add('queue-item');
 
-        let button = document.createElement('button');
-        button.setAttribute('data-id', i.toString());
-        button.innerHTML = 'Remove';
-        button.addEventListener('click', removeVideo);
+        let title = document.createElement('div');
+        title.innerText = video.title;
 
-        item.appendChild(button);
-        queueElement.appendChild(item);
+        let removeButton = document.createElement('a');
+        removeButton.setAttribute('data-id', i.toString());
+        removeButton.innerHTML = 'X';
+        removeButton.addEventListener('click', removeVideo);
+
+        queueItem.appendChild(title);
+        queueItem.appendChild(removeButton);
+
+        queueElement.appendChild(queueItem);
 
         i++;
     }

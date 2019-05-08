@@ -4,20 +4,22 @@
 <head>
     <meta charset="utf-8">
     <link rel="stylesheet" href="popup.css"/>
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:300, 700" rel="stylesheet">
 </head>
 <body>
-<div>
-    <p>Now Playing</p>
-    <p id="now-playing"></p>
-</div>
 <div id="controls">
     <div id="set-active">Set active tab</div>
-    <div id="play">Play/Pause</div>
+    <div id="play">Play</div>
     <div id="skip">Skip</div>
 </div>
-<p>Queue</p>
-<div id="queue"></div>
-
+<div id="status">
+    <p class="label">Now Playing</p>
+    <p id="now-playing"></p>
+</div>
+<div id="queue-container">
+    <p class="label">Queue</p>
+    <div id="queue"></div>
+</div>
 <script src="popup.js"></script>
 </body>
 </html>
