@@ -3,10 +3,27 @@
   "name": "YouTube Playlist",
   "version": "0.4",
   "description": "Playlist Extension",
+  "background": {
+    "scripts": [
+      "background.js"
+    ]
+  },
   "content_scripts": [
     {
-      "matches": ["*://*.youtube.com/*"],
-      "js": ["playlist.js"]
+      "matches": [
+        "*://*.youtube.com/watch*"
+      ],
+      "js": [
+        "video.js"
+      ]
+    },
+    {
+      "matches": [
+        "*://*.youtube.com/results*"
+      ],
+      "js": [
+        "search.js"
+      ]
     }
   ]
 }
