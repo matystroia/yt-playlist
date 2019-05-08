@@ -1,5 +1,5 @@
-let queueElement = document.getElementById('queue');
 let queue = [];
+let currentVideo = null;
 
 function removeVideo(e) {
     queue.splice(parseInt(e.target.getAttribute('data-id')), 1);
@@ -13,13 +13,22 @@ function updateQueue() {
 }
 
 function getQueue() {
-    browser.runtime.sendMessage({message: 'getQueue'}).then((response) => {
-        queue = response.queue;
+    let gettingQueue = browser.runtime.sendMessage({message: 'getQueue'});
+    let gettingVideo = browser.runtime.sendMessage({message: 'getVideo'});
+    Promise.all([gettingQueue, gettingVideo]).then(responses => {
+        queue = responses[0].queue;
+        currentVideo = responses[1].video;
         refreshPopup();
     });
 }
 
 function refreshPopup() {
+    const queueElement = document.getElementById('queue');
+    const nowPlayingElement = document.getElementById('now-playing');
+
+    if (currentVideo)
+        nowPlayingElement.innerText = currentVideo.title;
+
     queueElement.innerHTML = '';
 
     let i = 0;
@@ -40,7 +49,7 @@ function refreshPopup() {
 }
 
 function setActiveTab() {
-    browser.tabs.query({active: true, currentWindow: true}).then((tabs) => {
+    browser.tabs.query({active: true, currentWindow: true}).then(tabs => {
         browser.runtime.sendMessage({message: 'setActiveTab', tabId: tabs[0].id});
     });
 }

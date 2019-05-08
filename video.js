@@ -10,10 +10,10 @@ function handleMessage(request, sender, sendResponse) {
 }
 
 
-video.onended = function () {
-    browser.runtime.sendMessage({message: 'getNext'}).then((response) => {
-        window.location.href = 'https://www.youtube.com/watch?v=' + response.video.id;
-    });
-};
+// video.onended = function () {
+//     browser.runtime.sendMessage({message: 'getNext'}).then(response => {
+//         window.location.href = 'https://www.youtube.com/watch?v=' + response.video.id;
+//     });
+// };
 
 browser.runtime.onMessage.addListener(handleMessage);
