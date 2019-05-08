@@ -2,8 +2,14 @@ let queue = [];
 let currentVideo = null;
 let activeTabId = null;
 
+function getCurrentVideo() {
+    browser.tabs.sendMessage(activeTabId, {message: 'getVideo'}).then(response => {
+        currentVideo = response.video;
+    });
+}
+
 function handleMessage(request, sender, sendResponse) {
-    if (request.message === 'getVideo') {
+    if (request.message === 'getCurrentVideo') {
         sendResponse({video: currentVideo});
     } else if (request.message === 'addVideo') {
         queue.push(request.video);
@@ -14,11 +20,12 @@ function handleMessage(request, sender, sendResponse) {
     } else if (request.message === 'setActiveTab') {
         // TODO: Check if tab is YouTube video
         activeTabId = request.tabId;
+        getCurrentVideo();
+        browser.tabs.onUpdated.addListener(getCurrentVideo, {tabId: activeTabId, properties: ['status']});
     } else if (request.message === 'play') {
         browser.tabs.sendMessage(activeTabId, {message: 'play'});
     } else if (request.message === 'skip') {
-        currentVideo = queue.shift();
-        browser.tabs.sendMessage(activeTabId, {message: 'setVideo', video: currentVideo});
+        browser.tabs.sendMessage(activeTabId, {message: 'setVideo', video: queue.shift()});
     }
 }
 

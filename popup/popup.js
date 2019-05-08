@@ -15,7 +15,7 @@ function updateQueue() {
 function getQueue() {
     Promise.all([
         browser.runtime.sendMessage({message: 'getQueue'}),
-        browser.runtime.sendMessage({message: 'getVideo'})
+        browser.runtime.sendMessage({message: 'getCurrentVideo'})
     ]).then(responses => {
         queue = responses[0].queue;
         currentVideo = responses[1].video;
