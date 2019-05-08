@@ -1,12 +1,19 @@
 let video = document.getElementsByClassName('video-stream html5-main-video')[0];
 
+function handleMessage(request, sender, sendResponse) {
+    if (request.message === 'play') {
+        console.log('play');
+        video.click();
+    } else if (request.message === 'setVideo') {
+        window.location.href = 'https://www.youtube.com/watch?v=' + request.video.id;
+    }
+}
+
+
 video.onended = function () {
-    console.log('video ended');
-    browser.runtime.sendMessage({message: 'get'}).then((response) => {
-        console.log(response);
-        window.location.href = response.url;
-    }, (error) => {
-        console.log('error');
-        console.log(error);
+    browser.runtime.sendMessage({message: 'getNext'}).then((response) => {
+        window.location.href = 'https://www.youtube.com/watch?v=' + response.video.id;
     });
 };
+
+browser.runtime.onMessage.addListener(handleMessage);

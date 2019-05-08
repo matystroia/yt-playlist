@@ -1,14 +1,23 @@
-let playlist = [];
-let index = 0;
+let queue = [];
+let activeTabId = null;
 
 function handleMessage(request, sender, sendResponse) {
-    if (request.message === 'add') {
-        playlist.push(request.url);
-    }
-    else if (request.message === 'get') {
-        index = (index + 1) % playlist.length;
-        console.log(playlist[index]);
-        sendResponse({url: playlist[index]});
+    if (request.message === 'addVideo') {
+        queue.push(request.video);
+    } else if (request.message === 'getNext') {
+        queue.shift();
+        sendResponse({video: queue[0]});
+    } else if (request.message === 'getQueue') {
+        sendResponse({queue: queue});
+    } else if (request.message === 'setQueue') {
+        queue = request.queue;
+    } else if (request.message === 'setActiveTab') {
+        activeTabId = request.tabId;
+    } else if (request.message === 'play') {
+        browser.tabs.sendMessage(activeTabId, {message: 'play'});
+    } else if (request.message === 'skip') {
+        queue.shift();
+        browser.tabs.sendMessage(activeTabId, {message: 'setVideo', video: queue[0]})
     }
 }
 

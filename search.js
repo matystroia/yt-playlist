@@ -1,5 +1,12 @@
-function addToQueue(url) {
-    browser.runtime.sendMessage({message: 'add', url: url});
+function addToQueue(e) {
+    let video = e.target.parentNode;
+    browser.runtime.sendMessage({
+        message: 'addVideo',
+        video: {
+            id: video.getAttribute('data-context-item-id'),
+            title: video.querySelector('.yt-lockup-title span').innerText
+        }
+    });
 }
 
 let videos = document.getElementsByClassName('yt-lockup-video');
@@ -9,9 +16,7 @@ for (const video of videos) {
     button.style.color = '#767676';
     button.style.border = '1px solid black';
     button.style.padding = '2px';
-    button.onclick = function () {
-        addToQueue('https://www.youtube.com/watch?v=' + video.getAttribute('data-context-item-id'));
-    };
+    button.addEventListener('click', addToQueue);
 
     video.appendChild(button);
 }
