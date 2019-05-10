@@ -3,9 +3,8 @@ function getYoutubeVersion() {
 }
 
 function handleMessage(request, sender, sendResponse) {
-
     if (request.message === 'play') {
-        video.click();
+        document.getElementsByClassName('video-stream html5-main-video')[0].click();
     } else if (request.message === 'getVideo') {
         let videoId, videoTitle;
 

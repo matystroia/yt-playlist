@@ -32,8 +32,7 @@ function refreshPopup() {
 
     queueElement.innerHTML = '';
 
-    let i = 0;
-    for (const video of queue) {
+    for (const [index, video] of queue.entries()) {
         let queueItem = document.createElement('div');
         queueItem.classList.add('queue-item');
 
@@ -41,7 +40,7 @@ function refreshPopup() {
         title.innerText = video.title;
 
         let removeButton = document.createElement('a');
-        removeButton.setAttribute('data-id', i.toString());
+        removeButton.setAttribute('data-id', index.toString());
         removeButton.innerHTML = 'X';
         removeButton.addEventListener('click', removeVideo);
 
@@ -49,8 +48,6 @@ function refreshPopup() {
         queueItem.appendChild(removeButton);
 
         queueElement.appendChild(queueItem);
-
-        i++;
     }
 }
 

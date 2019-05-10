@@ -19,7 +19,7 @@ function addToQueue(e) {
         videoTitle = resultElement.querySelector('.yt-lockup-title span').innerText
     } else if (ytVersion === 'modern') {
         let titleElement = e.target.parentNode.querySelector('#video-title');
-        videoId = /watch\?v=(\w+)/.exec(titleElement.getAttribute('href'))[1];
+        videoId = /watch\?v=([\w-]+)/.exec(titleElement.getAttribute('href'))[1];
         videoTitle = titleElement.getAttribute('title');
     }
 
