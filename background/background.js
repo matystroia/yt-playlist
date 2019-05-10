@@ -10,11 +10,11 @@ function getCurrentVideo() {
 
 function handleMessage(request, sender, sendResponse) {
     if (request.message === 'getCurrentVideo') {
-        sendResponse({video: currentVideo});
+        return new Promise(resolve => resolve({video: currentVideo}));
     } else if (request.message === 'addVideo') {
         queue.push(request.video);
     } else if (request.message === 'getQueue') {
-        sendResponse({queue: queue});
+        return new Promise(resolve => resolve({queue: queue}));
     } else if (request.message === 'setQueue') {
         queue = request.queue;
     } else if (request.message === 'setActiveTab') {

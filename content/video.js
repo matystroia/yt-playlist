@@ -17,12 +17,12 @@ function handleMessage(request, sender, sendResponse) {
             videoTitle = document.getElementsByClassName('ytp-title-link')[0].innerHTML;
         }
 
-        sendResponse({
+        return new Promise(resolve => resolve({
             video: {
                 id: videoId,
                 title: videoTitle
             }
-        })
+        }));
     } else if (request.message === 'setVideo') {
         window.location.href = 'https://www.youtube.com/watch?v=' + request.video.id;
     }
